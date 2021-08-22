@@ -6,7 +6,7 @@ import { db } from "../../";
 import { Bar, Line } from "react-chartjs-2";
 import { barChart } from "../../models/barChart";
 
-export function StudentPeformance () {
+export function StudentPerformance () {
 
     const history = useHistory();
     const location = useLocation();

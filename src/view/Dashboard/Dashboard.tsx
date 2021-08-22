@@ -4,8 +4,8 @@ import {Switch, Route, Router} from "react-router";
 import {createBrowserHistory} from "history";
 import {Login} from "../Login/Login";
 import { Database } from "../Database/Database";
-import { StudentPeformance } from "../Performance/StudentPerformance";
-import { StudentPeformanceSubject } from "../Performance/StudentPerformanceSubject";
+import { StudentPerformance } from "../Performance/StudentPerformance";
+import { StudentPerformanceSubject } from "../Performance/StudentPerformanceSubject";
 
 export const history = createBrowserHistory()
 
@@ -35,7 +35,7 @@ export function Dashboard () {
                         <Route exact path={'/student-performance'} render={() =>
                             <Suspense fallback={""}>
                                 <SideBar/>
-                                <StudentPeformance/>
+                                <StudentPerformance/>
                             </Suspense>
                         }/>
                     </Switch>
@@ -43,7 +43,7 @@ export function Dashboard () {
                         <Route exact path={'/student-performance-subject'} render={() =>
                             <Suspense fallback={""}>
                                 <SideBar/>
-                                <StudentPeformanceSubject/>
+                                <StudentPerformanceSubject/>
                             </Suspense>
                         }/>
                     </Switch>

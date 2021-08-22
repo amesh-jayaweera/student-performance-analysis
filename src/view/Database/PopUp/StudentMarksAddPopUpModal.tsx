@@ -51,8 +51,7 @@ export function StudentMarksAddPopUpModal({status,isUpdated}:{status : any,isUpd
         quiz : true,
         assignment : true,
         midTerm : true,
-        miniProject : true,
-        endExam : true
+        miniProject : true
     });
 
     function addStudentMarks() {
@@ -64,8 +63,7 @@ export function StudentMarksAddPopUpModal({status,isUpdated}:{status : any,isUpd
             quiz : true,
             assignment : true,
             miniProject : true,
-            midTerm : true,
-            endExam : true
+            midTerm : true
         })
         setAlreadyExists(false)
         if(!!data.indexNumber) {
@@ -87,12 +85,7 @@ export function StudentMarksAddPopUpModal({status,isUpdated}:{status : any,isUpd
                         ...isMarksValid,
                         midTerm : false
                     })
-                } else if(data.endExam < 0 || data.endExam > 100) {
-                    setIsMarksValid({
-                        ...isMarksValid,
-                        endExam : false
-                    })
-                } else if(data.miniProject < 0 || data.miniProject > 100) {
+                }  else if(data.miniProject < 0 || data.miniProject > 100) {
                     setIsMarksValid({
                         ...isMarksValid,
                         miniProject : false
@@ -113,7 +106,17 @@ export function StudentMarksAddPopUpModal({status,isUpdated}:{status : any,isUpd
                             }
                         });
                         if(!flag) {
-                            db.collection("marks").add(data)
+                            let predicted_end_exam_score = 0.302839783 * data.assignment
+                                + 0.0849104368 * data.quiz - 0.0000801704296 * data.midTerm +
+                                0.444330645 * data.miniProject + 0.10504678;
+                            setData({
+                                ...data,
+                                endExam : predicted_end_exam_score
+                            });
+                            db.collection("marks").add({
+                                ...data,
+                                endExam : predicted_end_exam_score
+                            })
                             .then(function(docRef) {
                                 setLoading(false)
                                 isUpdated()
@@ -239,16 +242,6 @@ export function StudentMarksAddPopUpModal({status,isUpdated}:{status : any,isUpd
                                     })} className="form-control"
                                         type="number" min={0} max={100}/>
                                         {!isMarksValid.miniProject &&
-                                    <div className={"invalid-feedback d-block"}>{"Range should be 1-100"}</div> }
-                                </div>
-                                <div className="col-sm-6">
-                                    <p className="bold-font mt-3 mb-1">End Exam</p>
-                                    <input onChange={(e)=> setData({
-                                        ...data,
-                                        endExam : Number(e.target.value)
-                                    })} className="form-control"
-                                        type="number" min={0} max={100}/>
-                                        {!isMarksValid.endExam &&
                                     <div className={"invalid-feedback d-block"}>{"Range should be 1-100"}</div> }
                                 </div>
                             </div>
